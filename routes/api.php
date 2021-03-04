@@ -30,5 +30,12 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
 Route::post('logout', [LoginController::class, 'logout']);
 
-Route::post('addProject', [ProjectController ::class, 'addProject']);
-Route::get('getProject', [ProjectController ::class, 'getProject']);
+Route::post('addProject', [ProjectController::class, 'addProject']);
+Route::get('getProject', [ProjectController::class, 'getProject']);
+Route::put('/{id}', [ProjectController::class, 'update']);
+Route::delete('/{id}', [ProjectController::class, 'destroy']);
+
+/*
+Route::resource('projects', ProjectController::class)->except(['create', 'show']);
+Route::resource('tasks', TaskController::class)->except(['create', 'show']);
+*/

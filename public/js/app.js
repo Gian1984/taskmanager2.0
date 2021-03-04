@@ -1919,6 +1919,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -1930,16 +1942,41 @@ __webpack_require__.r(__webpack_exports__);
       this.projects.sort(function (a, b) {
         return a[prop] < b[prop] ? -1 : 1;
       });
+    },
+    getList: function getList() {
+      var _this = this;
+
+      axios.get('/api/getProject').then(function (response) {
+        _this.projects = response.data;
+      }, function (error) {
+        console.log(error);
+      });
+    },
+    updateCheck: function updateCheck() {
+      var _this2 = this;
+
+      axios.put('/api/' + this.project.id, {
+        project: this.project
+      }).then(function (response) {
+        if (response.status == 200) {
+          _this2.$emit('itemchanged');
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    removeProject: function removeProject(projectId, index) {
+      var _this3 = this;
+
+      axios["delete"]('/api/' + projectId).then(function (response) {
+        _this3.$delete(_this3.projects, index);
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   },
   created: function created() {
-    var _this = this;
-
-    axios.get('/api/getProject').then(function (response) {
-      _this.projects = response.data;
-    }, function (error) {
-      console.log(error);
-    });
+    this.getList();
   }
 });
 
@@ -44746,7 +44783,7 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _vm._l(_vm.projects, function(project) {
+          _vm._l(_vm.projects, function(project, index) {
             return _c(
               "v-card",
               { key: project.id, attrs: { flat: "", color: "teal lighten-5" } },
@@ -44783,24 +44820,52 @@ var render = function() {
                       _c("div", [_vm._v(_vm._s(project.date))])
                     ]),
                     _vm._v(" "),
-                    _c("v-col", [
-                      _c(
-                        "div",
-                        [
-                          _c(
-                            "v-chip",
-                            {
-                              class:
-                                project.status +
-                                " white--text mt-3 caption m-auto",
-                              attrs: { small: "" }
-                            },
-                            [_vm._v(_vm._s(project.status))]
-                          )
-                        ],
-                        1
-                      )
-                    ])
+                    _c(
+                      "v-col",
+                      [
+                        _c(
+                          "div",
+                          [
+                            _c(
+                              "v-chip",
+                              {
+                                class:
+                                  project.status +
+                                  " white--text mt-3 caption m-auto",
+                                attrs: { small: "" }
+                              },
+                              [_vm._v(_vm._s(project.status))]
+                            )
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "v-btn",
+                          { attrs: { icon: "", color: "red" } },
+                          [
+                            _c(
+                              "v-icon",
+                              {
+                                attrs: { small: "" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.removeProject(project.id, index)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n              mdi-trash-can-outline\n              "
+                                )
+                              ]
+                            )
+                          ],
+                          1
+                        )
+                      ],
+                      1
+                    )
                   ],
                   1
                 ),

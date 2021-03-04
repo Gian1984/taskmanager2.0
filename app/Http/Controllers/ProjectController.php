@@ -32,11 +32,33 @@ class ProjectController extends Controller
 
     public function getProject(){
 
-            $data = Project::all();
+            $project = Project::all();
     
-            return $data;   
+            return $project;   
 
     }
+
+    public function update(Request $request, $id)
+    {
+        $existingProject = Project::find($id);
+
+        if ($existingProject){
+            $existingProject->completed = $request->item['complete']? true : false ;
+            
+
+            $existingProject->save();
+            return $existingProject;
+        }
+
+        return "Project not found.";
+    }
+
+    public function destroy($id)
+    {
+        return Project::findOrFail($id)->delete();
+    }
+
+
 
 
 }

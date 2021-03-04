@@ -38,7 +38,7 @@
 
       </v-row>
 
-      <v-card flat color="teal lighten-5"  v-for="project in projects" :key="project.id">
+      <v-card flat color="teal lighten-5"  v-for="(project, index) in projects" :key="project.id">
         <v-row class="mb-2" no-gutters :class="`pa-3 project ${project.status}`">
           
 
@@ -60,7 +60,19 @@
           <v-col>
             <div>
                 <v-chip small :class="`${project.status} white--text mt-3 caption m-auto`">{{ project.status }}</v-chip>
-            </div>  
+            </div>
+
+            <v-btn
+              icon
+              color="red"
+            >
+                <v-icon
+                    small
+                    @click="removeProject(project.id, index)"
+                >
+                mdi-trash-can-outline
+                </v-icon>
+            </v-btn>  
           </v-col>
 
         </v-row>
@@ -80,21 +92,53 @@ export default {
       projects: []
     }
   },
+   
+
   methods:{
     sortBy(prop){
       this.projects.sort((a,b)=> a[prop] < b[prop] ? -1 : 1)
     },
     
-  },
+  
 
+    getList(){
+        axios.get('/api/getProject').then(response=>{     
+        this.projects = response.data;
+        }, (error) => {
+        console.log(error);  
+        })
+    },   
+
+    updateCheck(){
+        axios.put('/api/'+ this.project.id, {
+        project : this.project
+        })
+        .then(response=>{
+            if (response.status == 200){
+                this.$emit('itemchanged');
+                }
+            })
+            .catch(error =>{
+                console.log(error);
+            })
+    },
+
+    removeProject(projectId, index){
+            axios.delete('/api/'+ projectId)
+            .then( response =>{
+              this.$delete(this.projects, index)
+        })
+
+        .catch(error =>{
+        console.log(error);
+        })
+    },
+    
+  },
 
   created(){
-    axios.get('/api/getProject').then(response=>{    
-    this.projects = response.data;
-    }, (error) => {
-    console.log(error);  
-    })
-  },
+        this.getList();
+    }
   
 }
 </script>
