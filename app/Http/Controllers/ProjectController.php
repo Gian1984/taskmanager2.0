@@ -38,19 +38,11 @@ class ProjectController extends Controller
 
     }
 
-    public function update(Request $request, $id)
-    {
-        $existingProject = Project::find($id);
+    public function update(Request $request, $id){
 
-        if ($existingProject){
-            $existingProject->completed = $request->item['complete']? true : false ;
-            
-
-            $existingProject->save();
-            return $existingProject;
-        }
-
-        return "Project not found.";
+    
+        Project::where('id', $id)->update(array('status' => $request->status));
+        
     }
 
     public function destroy($id)
@@ -59,7 +51,10 @@ class ProjectController extends Controller
     }
 
 
-
-
+    //  create resource f a contreller example:
+    //  Route::resource('photos', PhotoController::class);
+    // guide at : https://laravel.com/docs/8.x/controllers#resource-controllers
+    // crea automaticamente delle route predefinite che posso vedere con il comando:
+    // php artisan route:list
 }
 

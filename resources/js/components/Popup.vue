@@ -128,7 +128,7 @@ export default {
                 status: this.status
             }
 
-
+            console.log(project)
             axios.post('/api/addProject',project).then(response=>{
             this.loading=false;
             this.dialog=false;

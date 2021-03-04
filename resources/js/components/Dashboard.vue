@@ -18,7 +18,7 @@
 
          <v-tooltip bottom small>
           <template v-slot:activator="{ on }">  
-            <v-btn small color="grey lighten-4 ml-3" v-on="on" @click="sortBy('person')">
+            <v-btn small color="grey lighten-4 ml-3" v-on="on" @click="sortBy('name')">
               <v-icon left small>mdi-account</v-icon>
               <div class="span caption text-lowercase">By person</div>
             </v-btn>
@@ -61,18 +61,34 @@
             <div>
                 <v-chip small :class="`${project.status} white--text mt-3 caption m-auto`">{{ project.status }}</v-chip>
             </div>
+          </v-col>
 
-            <v-btn
-              icon
-              color="red"
-            >
-                <v-icon
-                    small
-                    @click="removeProject(project.id, index)"
+          <v-col>
+            <div class="text-xs-right">
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  v-bind="attrs"
+                  v-on="on"
+                  icon
+                  color="red"
+                  class="mt-1"
                 >
-                mdi-trash-can-outline
-                </v-icon>
-            </v-btn>  
+                    <v-icon
+                        small
+                        @click="removeProject(project.id, index)"
+                        v-bind:project="[project.id, index]"
+                    >
+                    mdi-trash-can-outline
+                    </v-icon>
+                </v-btn>
+                </template>
+                <span>Remove</span>
+              </v-tooltip>
+              
+              <UpdateProject v-bind:project="project"/>
+              
+            </div>  
           </v-col>
 
         </v-row>
@@ -86,10 +102,19 @@
 
 <script>
 
+import UpdateProject from './UpdateProject'
+
 export default {
+
+  components: {UpdateProject},
+
   data() {
     return {
-      projects: []
+      projects: [],
+      fav: true,
+      menu: false,
+      message: false,
+      hints: true,
     }
   },
    
@@ -108,20 +133,6 @@ export default {
         console.log(error);  
         })
     },   
-
-    updateCheck(){
-        axios.put('/api/'+ this.project.id, {
-        project : this.project
-        })
-        .then(response=>{
-            if (response.status == 200){
-                this.$emit('itemchanged');
-                }
-            })
-            .catch(error =>{
-                console.log(error);
-            })
-    },
 
     removeProject(projectId, index){
             axios.delete('/api/'+ projectId)
@@ -168,5 +179,9 @@ export default {
   .v-chip.overdue{
   background: red !important;
   }
+
+  .text-xs-right {
+  white-space: nowrap;
+ }
 
 </style>
