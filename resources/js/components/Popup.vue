@@ -7,14 +7,15 @@
     >
       <template v-slot:activator="{ on, attrs }">
         <v-btn
-          class="mt-5 mb-1"
+          class="mt-5 mb-3"
           x-small
           color="red lighten-2"
           dark
           v-bind="attrs"
           v-on="on"
         >
-          Add new project
+        <v-icon class="mdi-18px">mdi-plus-circle-outline</v-icon>
+        <span> Add new project</span>
         </v-btn>
       </template>
 
@@ -128,11 +129,11 @@ export default {
                 status: this.status
             }
 
-            console.log(project)
+            
             axios.post('/api/addProject',project).then(response=>{
             this.loading=false;
             this.dialog=false;
-            window.location.reload()
+            window.location.reload(true)
 
             }).catch((error)=>{
               console.log(error)

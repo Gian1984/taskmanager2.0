@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard'
 import Projects from './components/Projects'
 import Notfound from './components/Notfound'
 import Team from './components/Team'
+import axios from 'axios'
 
 export default {
 
@@ -18,26 +19,27 @@ export default {
 
         {
             path: '/login',
-            component: Login
+            component: Login,
+            name: 'Login',
         },
 
         {
             path: '/register',
-            component: Register
+            component: Register,
+            name: 'Register',
         },
 
         {
             path: '/dashboard',
             component: Dashboard,
-            // name: 'Dashboard',
-            // beforeEnter: (to, form, next) => {
-            //     axios.get('/api/authenticated').then(() =>
-            //         next()
-            //     )
-            // }.catch(() => {
-            //         return next({ name: login })
-            //     )
-            // }
+            name: 'Dashboard',
+            beforeEnter: (to, form, next) => {
+                axios.get('/api/authenticated').then(() => {
+                    next()
+                }).catch(() => {
+                    return next({ name: 'Login' })
+                })
+            }
 
         },
 
@@ -49,12 +51,28 @@ export default {
 
         {
             path: '/team',
-            component: Team
+            component: Team,
+            name: 'Team',
+            beforeEnter: (to, form, next) => {
+                axios.get('/api/authenticated').then(() => {
+                    next()
+                }).catch(() => {
+                    return next({ name: 'Login' })
+                })
+            }
         },
 
         {
             path: '/projects',
-            component: Projects
+            component: Projects,
+            name: 'Projects',
+            beforeEnter: (to, form, next) => {
+                axios.get('/api/authenticated').then(() => {
+                    next()
+                }).catch(() => {
+                    return next({ name: 'Login' })
+                })
+            }
         }
     ]
 }

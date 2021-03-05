@@ -28,6 +28,13 @@
             </v-toolbar-title>
             <v-spacer></v-spacer>
 
+            <router-link to="/login" exact-path>
+                <v-btn depressed small text dark color="teal">
+                    <span id="name">Login</span>
+                    <v-icon>mdi-account-check</v-icon>
+                </v-btn>
+            </router-link>
+
             <v-btn depressed small text dark color="teal" @click="logout">
                 <span>Sign out</span>
                 <v-icon>mdi-exit-to-app</v-icon>
@@ -107,7 +114,6 @@ export default {
     methods:{
         logout(){
             axios.post('api/logout').then(response=>{
-            //   console.log(response.data)
             this.$router.push({ path: "/" });
 
           })

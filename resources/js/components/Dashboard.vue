@@ -38,33 +38,35 @@
 
       </v-row>
 
-      <v-card flat color="teal lighten-5"  v-for="(project, index) in projects" :key="project.id">
-        <v-row class="mb-2" no-gutters :class="`pa-3 project ${project.status}`">
+      <v-card :class="`project ${project.status}`" flat color="teal lighten-5"  v-for="(project, index) in projects" :key="project.id">
+        <v-row no-gutters class="pt-4 pr-1 pb-1 pl-4">
           
 
           <v-col>
             <div class="caption grey--text">Project title</div>
-            <div>{{project.title}}</div>
+            <div class="mt-1">{{project.title}}</div>
           </v-col>
 
           <v-col>
             <div class="caption grey--text">Person</div>
-            <div>{{project.name}}</div>
+            <div class="mt-1">{{project.name}}</div>
           </v-col>
 
           <v-col>
             <div class="caption grey--text">Due by</div>
-            <div>{{project.date}}</div>
+            <div class="mt-1">{{project.date}}</div>
           </v-col>
 
           <v-col>
             <div>
-                <v-chip small :class="`${project.status} white--text mt-3 caption m-auto`">{{ project.status }}</v-chip>
+                <div class="caption grey--text">Status</div>
+                <v-chip small :class="`${project.status} white--text mt-1 caption m-auto`">{{ project.status }}</v-chip>
             </div>
           </v-col>
 
           <v-col>
-            <div class="text-xs-right">
+            <div class="caption grey--text">Remove / Update</div>
+            <v-row >
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                 <v-btn
@@ -72,7 +74,7 @@
                   v-on="on"
                   icon
                   color="red"
-                  class="mt-1"
+                  class="mt-2"
                 >
                     <v-icon
                         small
@@ -86,9 +88,9 @@
                 <span>Remove</span>
               </v-tooltip>
               
-              <UpdateProject v-bind:project="project"/>
+              <UpdateProject class="mt-2" v-bind:project="project"/>
               
-            </div>  
+            </v-row>  
           </v-col>
 
         </v-row>
@@ -157,15 +159,15 @@ export default {
 <style scoped>
 
   .project.complete{
-    border-left: 4px solid green;
+    border-left: 4px solid green !important;
   }
 
   .project.ongoing{
-    border-left: 4px solid orange;
+    border-left: 4px solid orange !important;
   }
 
   .project.overdue{
-    border-left: 4px solid red;
+    border-left: 4px solid red !important;
   }
 
   .v-chip.complete{
@@ -180,8 +182,6 @@ export default {
   background: red !important;
   }
 
-  .text-xs-right {
-  white-space: nowrap;
- }
+
 
 </style>

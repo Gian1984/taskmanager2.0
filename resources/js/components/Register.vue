@@ -1,52 +1,70 @@
 <template>
+  <v-container grid-list-md text-xs-center>
 
-    <v-form
-    ref="form"
-    v-model="valid"
-    lazy-validation
-    class="ma-4"
-  >
-    
-    <h1 class="title grey--text">Register</h1>
-
-    <v-text-field
-      v-model="name"
-      :rules="nameRules"
-      label="Name"
-      required
-    ></v-text-field>
-
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
-    ></v-text-field>
-
-    <v-text-field
-      v-model="password"
-      :rules="passwordRules"
-      label="Password"
-      required
-    ></v-text-field>
-
-    <v-btn
-      :disabled="!valid"
-      color="success"
-      class="mr-4"
-      @click="saveForm"
+    <v-card
+      id="main"
+      elevation="24"
+      class="text-xs-center mt-5"
     >
-      Submit
-    </v-btn>
+        <v-form
+        ref="form"
+        v-model="valid"
+        lazy-validation
+        class="m-5"
+      >
+        
+        <h1 class="title grey--text">Register</h1>
 
-  </v-form>
+        <v-text-field
+          v-model="name"
+          prepend-icon="mdi-face"
+          :rules="nameRules"
+          label="Name"
+          required
+        ></v-text-field>
+
+        <v-text-field
+          v-model="email"
+          prepend-icon="mdi-email-outline"
+          :rules="emailRules"
+          label="E-mail"
+          required
+        ></v-text-field>
+        
+
+        <v-text-field
+          v-model="password"
+          prepend-icon="mdi-key"
+          type="password"
+          :rules="passwordRules"
+          label="Password"
+          required
+        ></v-text-field>
+
+        <div class="text-xs-center" v-if="errors.data">{{errors.data.errors.email[0]}}</div>
+        <v-divider></v-divider>
+        <v-spacer></v-spacer>
+
+        <v-btn  
+          color="teal"
+          depressed 
+          dark
+          class="mr-4"
+          @click="saveForm"
+        >
+          Submit
+        </v-btn>
+
+      </v-form>
+    </v-card>
+  </v-container>  
 </template>
 
 <script>
   export default {
     data: () => ({
         valid: true,
-          
+            errors: [],
             name: '',
             nameRules: [
                 v => !!v || 'Name is required',
@@ -81,10 +99,18 @@
             this.$router.push({ path: "/login" });
 
           }).catch((error)=>{
-              console.log(error)
+                this.errors = error.response
           })
 
       }
     },
   }
 </script>
+
+<style scoped>
+  #main{
+    margin:auto;
+    max-width: 500px !important;
+    border: 1px teal solid;
+  }
+</style>

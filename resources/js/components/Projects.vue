@@ -1,6 +1,7 @@
 <template>
   <div class="projects">
     <h1 class="title grey--text">Projects</h1>
+    <p>{{user}}</p>
     <v-container fluid class="my-5">
       
       <v-row justify="center" class="px-5"> 
@@ -24,6 +25,9 @@
 
 
 export default {
+
+  props: ['user'],
+
   data() {
     return {
       projects: []
@@ -31,8 +35,10 @@ export default {
   },
   computed:{
 
+
     myProjects(){
       return this.projects.filter(project => {
+        console.log(this.user)
         return project.name === 'Gianluca Tiengo'
       })
     } 
